@@ -1,5 +1,6 @@
 package me.absprt.absprtnewtask.module;
 
+import me.absprt.absprtnewtask.AbsprtNewTask;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,16 +11,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Arrays;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-/**
- * @author AbstractPrinter
- */
 public class ModuleLoader {
     private static final Logger logger = LoggerFactory.getLogger(ModuleLoader.class.getSimpleName());
     private final Yaml yaml;
@@ -47,9 +43,17 @@ public class ModuleLoader {
             Class<?> moduleMainClass = Class.forName(moduleDescription.getMainClass(), true, urlClassLoader);
             Module module = (Module) moduleMainClass.getConstructor().newInstance();
 
-            Field field = Module.class.getDeclaredField("moduleDescription");
-            field.setAccessible(true);
-            field.set(module, moduleDescription);
+            Field moduleDescriptionField = Module.class.getDeclaredField("moduleDescription");
+            moduleDescriptionField.setAccessible(true);
+            moduleDescriptionField.set(module, moduleDescription);
+
+            Field moduleManagerField = Module.class.getDeclaredField("moduleManager");
+            moduleManagerField.setAccessible(true);
+            moduleManagerField.set(module, AbsprtNewTask.getModuleManager());
+
+            Field taskManagerField = Module.class.getDeclaredField("taskManager");
+            taskManagerField.setAccessible(true);
+            taskManagerField.set(module, AbsprtNewTask.getTaskManager());
 
             return module;
         } catch (Throwable e) {

@@ -61,7 +61,7 @@ public class JsonConfiguration extends FileConfiguration {
         }
     }
 
-    public JsonConfiguration loadConfiguration(File file) {
+    public static JsonConfiguration loadConfiguration(File file) {
         JsonConfiguration jsonConfiguration = new JsonConfiguration();
         jsonConfiguration.load(file);
         return jsonConfiguration;
