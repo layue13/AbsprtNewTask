@@ -82,4 +82,8 @@ public class ModuleManager {
         logger.info("Disable Module: " + module.getModuleDescription().getName());
         module.onDisable();
     }
+
+    public void disableAllModule() {
+        this.moduleList.forEach(Module::onDisable);
+    }
 }

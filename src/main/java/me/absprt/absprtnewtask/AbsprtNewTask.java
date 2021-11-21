@@ -32,5 +32,7 @@ public class AbsprtNewTask {
             taskManager.runCanRunTasks();
         }
 
+        moduleManager.disableAllModule();
+        System.exit(0);
     }
 }
