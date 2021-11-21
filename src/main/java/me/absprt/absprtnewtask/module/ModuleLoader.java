@@ -16,6 +16,7 @@ import java.util.jar.JarFile;
 
 public class ModuleLoader {
     private final Yaml yaml;
+
     public ModuleLoader() {
         this.yaml = new Yaml();
         this.yaml.setBeanAccess(BeanAccess.FIELD);
@@ -47,6 +48,10 @@ public class ModuleLoader {
         Field taskManagerField = Module.class.getDeclaredField("taskManager");
         taskManagerField.setAccessible(true);
         taskManagerField.set(module, AbsprtNewTask.getTaskManager());
+
+        Field enableField = Module.class.getDeclaredField("enabled");
+        enableField.setAccessible(true);
+        enableField.set(module, false);
 
         return module;
     }

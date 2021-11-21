@@ -11,10 +11,6 @@ public class AbsprtNewTask {
     private static final TaskManager taskManager = new TaskManager();
     private static boolean running;
 
-    public static Logger getLogger() {
-        return logger;
-    }
-
     public static ModuleManager getModuleManager() {
         return moduleManager;
     }
@@ -25,6 +21,8 @@ public class AbsprtNewTask {
 
     public static void main(String[] args) throws InterruptedException {
         moduleManager.loadAllModule();
+        moduleManager.enableAllModule();
+
         taskManager.loadLocalTasks();
 
         running = true;

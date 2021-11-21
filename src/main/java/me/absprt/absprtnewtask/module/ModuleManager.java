@@ -22,10 +22,6 @@ public class ModuleManager {
         createModuleDir();
     }
 
-    public Logger getLogger() {
-        return logger;
-    }
-
     public File getModulesDir() {
         return modulesDir;
     }
@@ -43,6 +39,7 @@ public class ModuleManager {
                 .forEach(file -> {
                     Module module = moduleLoader.loadModule(file);
                     logger.info("Load Module: " + module.getModuleDescription().toString());
+                    this.moduleList.add(module);
                 });
     }
 
@@ -53,6 +50,10 @@ public class ModuleManager {
             }
         }
         return null;
+    }
+
+    public void enableAllModule() {
+        this.moduleList.forEach(this::enableModule);
     }
 
     @SneakyThrows
