@@ -1,20 +1,29 @@
 package me.absprt.absprtnewtask.module;
 
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.*;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class ModuleManager {
-    private static final Logger logger = LoggerFactory.getLogger(ModuleManager.class.getSimpleName());
+    private final Logger logger = LoggerFactory.getLogger(ModuleManager.class.getSimpleName());
     private final File modulesDir = new File("modules");
     private final List<Module> moduleList = new ArrayList<>();
     private final ModuleLoader moduleLoader = new ModuleLoader();
 
     public ModuleManager() {
         createModuleDir();
+    }
+
+    public Logger getLogger() {
+        return logger;
     }
 
     public File getModulesDir() {
@@ -29,43 +38,43 @@ public class ModuleManager {
     }
 
     public void loadAllModule() {
-        File dir = this.modulesDir;
-        Arrays.stream(Objects.requireNonNull(dir.listFiles()))
+        Arrays.stream(Objects.requireNonNull(this.modulesDir.listFiles()))
                 .filter(file -> file.getName().endsWith(".jar"))
                 .forEach(file -> {
                     Module module = moduleLoader.loadModule(file);
-                    this.registerModule(module);
                     logger.info("Load Module: " + module.getModuleDescription().toString());
                 });
     }
 
-    public Module getModule(@NotNull String className) {
+    public Module getModule(@NotNull String moduleName) {
         for (Module module : moduleList) {
-            if (module.getClass().getName().equalsIgnoreCase(className)) {
+            if (module.getModuleDescription().getName().equals(moduleName)) {
                 return module;
             }
         }
         return null;
     }
 
-    public void enableAllModule() {
-        moduleList.forEach(Module::onEnable);
-    }
-
-    public void disableAllModule() {
-        moduleList.forEach(Module::onDisable);
-    }
-
-    public void registerModule(@NotNull Module module) {
-        if (this.moduleList.contains(module)) {
+    @SneakyThrows
+    public void enableModule(@NotNull Module module) {
+        if (module.isEnabled()) {
             return;
         }
-        this.moduleList.add(module);
-    }
-
-    public void enableModule(@NotNull Module module) {
+        if (module.getModuleDescription().getDepends() != null) {
+            for (String depend : module.getModuleDescription().getDepends()) {
+                if (this.getModule(depend) == null) {
+                    throw new RuntimeException("depend module not found: " + depend);
+                }
+                if (!this.getModule(depend).isEnabled()) {
+                    this.enableModule(this.getModule(depend));
+                }
+            }
+        }
         logger.info("Enable Module: " + module.getModuleDescription().getName());
         module.onEnable();
+        Field enabledField = Module.class.getDeclaredField("enabled");
+        enabledField.setAccessible(true);
+        enabledField.set(module, true);
     }
 
     public void disableModule(@NotNull Module module) {

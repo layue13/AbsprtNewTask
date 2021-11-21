@@ -11,6 +11,7 @@ public abstract class Module {
     private ModuleDescription moduleDescription;
     private ModuleManager moduleManager;
     private TaskManager taskManager;
+    private boolean enabled;
 
     public abstract void onEnable();
 

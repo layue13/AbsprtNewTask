@@ -1,9 +1,13 @@
 package me.absprt.absprtnewtask.configuration;
 
 import com.google.gson.Gson;
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,17 +52,14 @@ public class JsonConfiguration extends FileConfiguration {
         this.save(loadFile);
     }
 
+    @SneakyThrows
     @Override
     public void load(@NotNull File file) {
-        try {
-            this.data = gson.fromJson(new FileReader(file), Map.class);
-            if (data == null) {
-                data = new HashMap<>();
-            }
-            this.loadFile = file;
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+        this.data = gson.fromJson(new FileReader(file), Map.class);
+        if (data == null) {
+            data = new HashMap<>();
         }
+        this.loadFile = file;
     }
 
     public static JsonConfiguration loadConfiguration(File file) {
