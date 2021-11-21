@@ -54,6 +54,7 @@ public class TaskManager {
     }
 
     public void loadLocalTasks() {
+        logger.info("Loading local tasks.");
         Arrays.stream(Objects.requireNonNull(this.taskDir.listFiles()))
                 .filter(file -> file.getName().endsWith(".yaml") || file.getName().endsWith(".yml") || file.getName().endsWith(".json"))
                 .forEach(file -> {
