@@ -34,6 +34,7 @@ public class ModuleManager {
     }
 
     public void loadAllModule() {
+        logger.info("Load All Module.");
         Arrays.stream(Objects.requireNonNull(this.modulesDir.listFiles()))
                 .filter(file -> file.getName().endsWith(".jar"))
                 .forEach(file -> {
