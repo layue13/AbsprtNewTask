@@ -22,7 +22,7 @@ dependencies {
     implementation 'org.yaml:snakeyaml:1.29'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'org.slf4j:slf4j-api:1.7.32'
-    implementation 'ch.qos.logback:logback-classic:1.2.6'
+    implementation 'ch.qos.logback:logback-classic:1.2.7'
 
     testCompileOnly 'org.projectlombok:lombok:1.18.22'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
