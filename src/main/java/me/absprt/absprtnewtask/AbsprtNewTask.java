@@ -26,7 +26,8 @@ public class AbsprtNewTask {
     public static void main(String[] args) throws InterruptedException {
         moduleManager.loadAllModule();
         moduleManager.enableAllModule();
-
+        taskManager.loadLocalTasks();
+        
         running = true;
 
         while (running) {

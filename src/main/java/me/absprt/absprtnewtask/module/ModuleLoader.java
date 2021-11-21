@@ -2,6 +2,7 @@ package me.absprt.absprtnewtask.module;
 
 import me.absprt.absprtnewtask.AbsprtNewTask;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
